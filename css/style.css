@@ -1,0 +1,232 @@
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Archivo:wght@600;800&display=swap');
+
+:root {
+  --bg: #0c0c0d;
+  --panel: #131315;
+  --line: #2a2a2e;
+  --text: #e8e6e1;
+  --text-dim: #8a8a8e;
+  --accent: #ff5a2e;     /* hot signal-red, phosphor-adjacent */
+  --accent-dim: #8a2f16;
+  --ok: #6fe3a3;
+  --mono: 'JetBrains Mono', monospace;
+  --display: 'Archivo', sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--mono);
+  font-size: 13px;
+  line-height: 1.5;
+  min-height: 100vh;
+  position: relative;
+}
+
+/* motivated texture: subtle animated grain over the whole app, not just the canvas —
+   ties the chrome itself to the thesis instead of only the output */
+.grain-overlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 999;
+  opacity: 0.035;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 20px 28px;
+  border-bottom: 1px solid var(--line);
+}
+
+.brand-mark {
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: 20px;
+  letter-spacing: 0.02em;
+  color: var(--text);
+}
+
+.brand-sub {
+  color: var(--text-dim);
+  font-size: 11px;
+  margin-left: 10px;
+}
+
+.brand-credit {
+  color: var(--text-dim);
+  text-decoration: none;
+  font-size: 11px;
+  border-bottom: 1px dashed var(--line);
+}
+.brand-credit:hover { color: var(--accent); }
+
+.layout {
+  display: grid;
+  grid-template-columns: 260px 1fr 260px;
+  gap: 1px;
+  background: var(--line);
+}
+
+@media (max-width: 900px) {
+  .layout { grid-template-columns: 1fr; }
+}
+
+.panel {
+  background: var(--panel);
+  padding: 20px;
+}
+
+.panel-title {
+  font-family: var(--display);
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-dim);
+  margin: 0 0 14px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--line);
+}
+
+.panel-note {
+  text-transform: none;
+  letter-spacing: normal;
+  font-weight: 400;
+  opacity: 0.7;
+}
+
+/* the visible seam — torn/off-register border, not a clean rounded box */
+.dropzone {
+  border: 1px dashed var(--line);
+  padding: 24px 12px;
+  text-align: center;
+  cursor: pointer;
+  transition: border-color 0.15s ease;
+  margin-bottom: 24px;
+  position: relative;
+}
+.dropzone:hover { border-color: var(--accent-dim); }
+.dropzone.drag-over { border-color: var(--accent); background: rgba(255,90,46,0.06); }
+.dropzone-small { padding: 16px 10px; margin-bottom: 12px; }
+
+.dropzone-label {
+  margin: 0;
+  color: var(--text-dim);
+  font-size: 12px;
+}
+.dropzone-label span { color: #55555a; font-size: 11px; }
+
+.control-row { display: flex; flex-direction: column; gap: 12px; margin-bottom: 20px; }
+.control { display: flex; flex-direction: column; gap: 6px; font-size: 11px; color: var(--text-dim); }
+.control select {
+  background: var(--bg);
+  color: var(--text);
+  border: 1px solid var(--line);
+  padding: 6px 8px;
+  font-family: var(--mono);
+  font-size: 12px;
+}
+
+.panel-preview { display: flex; flex-direction: column; }
+
+.canvas-wrap {
+  position: relative;
+  background: #000;
+  border: 1px solid var(--line);
+  aspect-ratio: 16 / 9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.canvas-wrap canvas { max-width: 100%; max-height: 100%; display: block; }
+
+.empty-state {
+  position: absolute;
+  color: #3d3d40;
+  font-size: 11px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.export-row {
+  margin-top: 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.btn-primary {
+  background: var(--accent);
+  color: #0c0c0d;
+  border: none;
+  padding: 10px 22px;
+  font-family: var(--display);
+  font-weight: 600;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+}
+.btn-primary:disabled { background: var(--line); color: var(--text-dim); cursor: not-allowed; }
+.btn-primary:not(:disabled):hover { background: #ff7248; }
+
+.export-status { font-size: 11px; color: var(--text-dim); }
+
+.preset-row { display: flex; gap: 6px; margin-bottom: 20px; flex-wrap: wrap; }
+.preset-btn {
+  background: transparent;
+  border: 1px solid var(--line);
+  color: var(--text-dim);
+  font-family: var(--mono);
+  font-size: 11px;
+  padding: 6px 10px;
+  cursor: pointer;
+}
+.preset-btn:hover { border-color: var(--accent-dim); color: var(--text); }
+.preset-btn.active { border-color: var(--accent); color: var(--accent); }
+
+.slider-row {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 11px;
+  color: var(--text-dim);
+  margin-bottom: 16px;
+}
+
+.slider-row input[type="range"] {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 2px;
+  background: var(--line);
+  outline: none;
+}
+.slider-row input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 11px;
+  height: 11px;
+  background: var(--accent);
+  cursor: pointer;
+  border-radius: 0;
+}
+
+.checkbox-row { flex-direction: row; align-items: center; justify-content: space-between; }
+.checkbox-row input { accent-color: var(--accent); }
+
+.footer-note {
+  padding: 16px 28px 32px;
+  color: #4a4a4e;
+  font-size: 10.5px;
+  max-width: 640px;
+}
+.footer-note a { color: #6a6a6e; }
