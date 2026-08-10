@@ -180,7 +180,7 @@ exportBtn.addEventListener('click', () => {
   if (!sourceIsVideo) {
     // still image export
     const link = document.createElement('a');
-    link.download = 'flutter-export.png';
+    link.download = 'dither-export.png';
     link.href = outCanvas.toDataURL('image/png');
     link.click();
     exportStatus.textContent = 'saved PNG';
@@ -199,7 +199,7 @@ exportBtn.addEventListener('click', () => {
   recorder.onstop = () => {
     const blob = new Blob(chunks, { type: mime });
     const link = document.createElement('a');
-    link.download = 'flutter-export.webm';
+    link.download = 'dither-export.webm';
     link.href = URL.createObjectURL(blob);
     link.click();
     exportStatus.textContent = 'saved WEBM';
