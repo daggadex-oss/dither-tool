@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Archivo:wght@600;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Archivo:wght@600;800&family=Press+Start+2P&display=swap');
 
 :root {
   --bg: #0c0c0d;
@@ -11,6 +11,7 @@
   --ok: #6fe3a3;
   --mono: 'JetBrains Mono', monospace;
   --display: 'Archivo', sans-serif;
+  --pixel: 'Press Start 2P', monospace;  /* signature title face — accent only, per CTV legibility rule */
 }
 
 * { box-sizing: border-box; }
@@ -47,9 +48,9 @@ body {
 }
 
 .brand-mark {
-  font-family: var(--display);
-  font-weight: 800;
-  font-size: 20px;
+  font-family: var(--pixel);
+  font-weight: 400;
+  font-size: 15px;
   letter-spacing: 0.02em;
   color: var(--text);
 }
